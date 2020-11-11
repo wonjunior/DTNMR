@@ -1,4 +1,4 @@
-Implementation of the music recommendation model described in [*Deep Temporal Neural Music Recommendation Model Utilizing Music and User Metadata*](https://www.mdpi.com/2076-3417/9/4/703). The database used in the paper is [WSDM-KKBOX](https://www.kaggle.com/c/kkboxmusic-recommendation-challenge/data).
+Implementation of the music recommendation model described in [*Deep Temporal Neural Music Recommendation Model Utilizing Music and User Metadata*](https://www.mdpi.com/2076-3417/9/4/703). The database used in the paper is [WSDM-KKBOX](https://www.kaggle.com/c/kkbox-music-recommendation-challenge).
 
 The **DTNMR** model is based on extracting music characteristics and users’ intrinsic preferences from
 their metadata. Given a user's metadata and the user's history of played songs, the objective is to provide the best song recommendation for that user to listen to.
@@ -42,10 +42,17 @@ After the pre-processing phase, the database subset contains a total of 11k uniq
 
 On the first run, it will perform the initial data extraction and preprocessing. This will dump the processed data into four separate files `songs.p`, `users.p`, `training.p`, and `testing.p`. These files will be used to initialize the different encoders and torch Datasets.
 
-Other possible arguments:
+Options:
 - `--reload`: this flag can be used to force refresh cache. This is especially useful when changing the different preprocessing parameters, see next [**TODO**].
 - `--top NB`: will remove all songs which are not among the NB% most popular songs.
 - `--min-len NB`: the minimum number of songs in a playlist for the user to be used for training.
 - `--short-term-len NB`: the length of the short-term playlists.
 - `--long-term-len NB`: the length of the long-term playlists, Must be lower than `--min-len`.
 
+---
+
+#### TODO
+
+- ST_playlist_len to lowercase
+- add support for arguments and training parameters
+- correct the epoch loss `.format`
