@@ -28,6 +28,14 @@ After the pre-processing phase, the database subset contains a total of 11k uniq
 
 ---
 
+#### Model structure
+
+![DTNMR model structure](https://i.stack.imgur.com/dJEdv.png)
+
+*A thousand words leave not the same deep impression as does a single deed.* - Henrik Ibsen
+
+---
+
 #### Usage
 
     python run.py [--reload]
