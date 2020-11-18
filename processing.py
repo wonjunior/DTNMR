@@ -11,7 +11,7 @@ def process_training(train):
     return popularity, most_popular
 
 
-def process_songs(songs, popularity, most_popular):
+def process_songs(songs, popularity, most_popular, top):
     print('processing songs...')
 
     indices = {x: i for i, x in enumerate(songs['song_id'])}
@@ -23,8 +23,8 @@ def process_songs(songs, popularity, most_popular):
     # Tag songs by going through the feature values one feature at a time.
     _, __ = process_feature(songs['song_id'],
         transform=lambda x: popularity[x]/most_popular if x in popularity else 0,
-        policy=lambda x: x > 0.001) # top 0.1% most popular
-    length, length_set = process_feature(songs['song_length'],
+        policy=lambda x: x > top)
+    length, length_set = process_feature(songs['song_len'],
         transform=lambda x: int(x)/1000, policy=lambda x: x < 360)
     genre, genre_set = process_feature(songs['genre_ids'])
     artist, artist_set = process_feature(songs['artist_name'],
