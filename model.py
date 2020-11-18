@@ -29,7 +29,7 @@ class DTNMRWrapper:
         for epoch in range(epochs):
             print('Epoch %i/%i' % (epoch+1, epochs))
             losses, accuracies = self.train_epoch()
-            print('summary of epoch: average loss={:.2f}, average accuracy={:.2f}'
+            print('summary of epoch: average loss={:.2f}, average accuracy={:.2f}' \
                 .format(mean(losses), mean(accuracies)))
 
     def train_epoch(self):
@@ -65,14 +65,14 @@ class DTNMR(Module):
             rating = RC(user_embedding, song_embedding)
     """
 
-    def __init__(self, user_mhe_size, song_mhe_size, behavior_mhe_size, ST_playlist_len, emb_size):
+    def __init__(self, user_mhe_size, song_mhe_size, behavior_mhe_size, st_playlist_len, emb_size):
         """Given the entity encoding sizes, it will construct the different components."""
         super(DTNMR, self).__init__()
         self.user_mhe_size = user_mhe_size
         self.song_mhe_size = song_mhe_size
         self.emb_size = emb_size
         self.song_emb_size = emb_size + behavior_mhe_size
-        self.ST_playlist_len = ST_playlist_len
+        self.st_playlist_len = st_playlist_len
 
         self.USFC = MLP(self.user_mhe_size, n_1=512, n_2=64, n_out=emb_size)
         self.MFC = MLP(self.song_mhe_size, n_1=512, n_2=64, n_out=emb_size)
@@ -90,9 +90,9 @@ class DTNMR(Module):
         # User dynamic feature embedding.
         latent_playlist = torch.stack([self.MFC(s.float()) for s in playlist])
         behaviors = torch.stack([b.float() for b in behaviors])
-        LT_playlist = torch.cat([latent_playlist, behaviors], dim=2)
-        ST_playlist = LT_playlist[-self.ST_playlist_len:]
-        user_dynamic = self.UDFC(LT_playlist) + self.UDFC(ST_playlist)
+        Lt_playlist = torch.cat([latent_playlist, behaviors], dim=2)
+        st_playlist = Lt_playlist[-self.st_playlist_len:]
+        user_dynamic = self.UDFC(Lt_playlist) + self.UDFC(st_playlist)
 
         # User feature combined embedding.
         user_feature = user_static + user_dynamic

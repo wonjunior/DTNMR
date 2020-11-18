@@ -10,7 +10,7 @@ class MRSDataset(Dataset):
     """
 
     def __init__(self, user_song, playlist, users, songs, user_enc, song_enc, behavior_enc,
-        subset_size, LT_playlist_len):
+        subset_size, Lt_playlist_len):
         self.user_song = user_song
         self.playlist = playlist
         self.users = users
@@ -20,7 +20,7 @@ class MRSDataset(Dataset):
         self.song_enc = song_enc
         self.behavior_enc = behavior_enc
         self.subset_size = subset_size
-        self.LT_playlist_len = LT_playlist_len
+        self.Lt_playlist_len = Lt_playlist_len
 
     def __getitem__(self, index):
         """
@@ -28,7 +28,7 @@ class MRSDataset(Dataset):
         for picking training points:
             [0: (user, song), ..., index: (user_id, label_id), ..., n: (user, song)]
                                                     |
-                                                    u, s
+                                                   u, s
         From there, we locate the song's position in the user's complete playlist:
             [s_1, ...,  s_k  ...,  s_i-1,  s_i,  ...,  s_n]
                          \___________/      |
@@ -61,8 +61,8 @@ class MRSDataset(Dataset):
 
         user = self.encode_user(user_id, playlist)
 
-        playlist_LT = playlist[-self.LT_playlist_len:]
-        behaviors_LT = behaviors[-self.LT_playlist_len:]
+        playlist_Lt = playlist[-self.Lt_playlist_len:]
+        behaviors_Lt = behaviors[-self.Lt_playlist_len:]
 
         # Randomly sample a subset from the complete list of songs.
         subset_ids = random.sample(self.songs.keys(), self.subset_size - 1)
@@ -70,7 +70,7 @@ class MRSDataset(Dataset):
 
         label = self.encode_song(label_id)
 
-        return user, playlist_LT, behaviors_LT, [label] + subset
+        return user, playlist_Lt, behaviors_Lt, [label] + subset
 
     def encode_user(self, user_id, playlist):
         return self.user_enc(*self.users[user_id], playlist)
